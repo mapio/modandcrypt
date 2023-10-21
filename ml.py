@@ -1,3 +1,4 @@
+from functools import reduce
 from operator import mul, add
 
 from tabulate import tabulate
@@ -15,7 +16,7 @@ def egcd(a, b):
 def gcd(a, b):
   return egcd(a, b)[0]
 
-def is_prime(n):
+def è_primo(n):
   if n < 2: return False
   i = 2
   while i * i <= n:
@@ -23,16 +24,20 @@ def is_prime(n):
     i += 1
   return True
 
-def factors(n):
+def fattorizza(n):
+  res = []
   i = 2
   while i * i <= n:
     if n % i == 0:
-      yield i
+      res.append(i)
       n //= i
     else:
       i += 1
-  if n > 1:
-    yield n
+  if n > 1: res.append(n)
+  return res
+
+def moltiplica(lst):
+  return reduce(mul, lst, 1)
 
 def φ(n):
   return sum(1 for k in range(1, n + 1) if gcd(n, k) == 1)
