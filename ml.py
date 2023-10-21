@@ -99,48 +99,44 @@ class Mod:
     self.m = m   
   def __getitem__(self, i):
     return Mod.R(i, self.m)
-  def coprimi(self):
+  def elementi(self):
+    return [self[i] for i in range(self.m)]
+  def elementi_coprimi(self):
     return [self[i] for i in range(1, self.m) if gcd(i, self.m) == 1]
   def somma(self):
-    op_table('+', self.m)
+    N = self.elementi()
+    vals = [[_sgr(i + j, 92, 0) for i in N] for j in N]
+    H = _sgr(N)
+    print(tabulate(vals, headers = [_sgr('+')] + H, showindex = H, tablefmt = "simple_grid"))
   def prodotto(self):
-    op_table('*', self.m)
+    N = self.elementi()[1:]
+    vals = [[_sgr(_sgr(i * j, 92, 1), 91, 0) for i in N] for j in N]
+    H = _sgr(N)
+    _table(vals, [_sgr('*')] + H, H)
   def prodotto_coprimi(self):
-    op_table('*', self.m, True)
+    N = self.elementi_coprimi()
+    vals = [[_sgr(_sgr(i * j, 92, 1), 91, 0) for i in N] for j in N]
+    H = _sgr(N)
+    _table(vals, [_sgr('*')] + H, H)
   def generatori(self):
-    N = self.coprimi()
-    H = [ansi_boldify('**')] + ansi_boldify(list(range(1, 1 + φ(self.m))))
-    print(tabulate([r.potenze() for r in N], headers = H, showindex = ansi_boldify(N), tablefmt = 'simple_grid'))
+    N = self.elementi_coprimi()
+    vals = [r.potenze() for r in N]
+    t = φ(self.m)
+    H = [_sgr('**')] + _sgr(range(1, 1 + t))
+    I = [_sgr(n) if len(v) != t else _sgr(_sgr(n), 96) for n, v in zip(N, vals)]
+    _table(vals, H, I)
 
 # display
 
-def ansi_boldify(param):
-  if isinstance(param, list):
-    return [f'\033[1m{e}\033[0m' for e in param]
+def _table(vals, header, index):
+  print(tabulate(vals, headers = header, showindex = index, tablefmt = 'simple_grid'))
+ 
+def _sgr(what, code = 1, target = None):
+  if target is not None and what != target: return what
+  if isinstance(what, (list, range)):
+    return [f'\033[{code}m{e}\033[0m' for e in what]
   else:
-    return f'\033[1m{param}\033[0m'
-
-def ansi_color(param, color):
-  if isinstance(param, list):
-    return [f'\033[{color}m{e}\033[0m' for e in param]
-  else:
-    return f'\033[{color}m{param}\033[0m'
-
-def op_table(op, n, restrict = False):
-  def col(v, t, c):
-    return v if v != t else ansi_color(v, c)
-  M = Mod(n)
-  first = 1 if op == '*' else 0
-  N = [M[i] for i in range(first, n)]
-  if op == '*':
-    if restrict: N = [M[i] for i in range(first, n) if gcd(i, n) == 1]
-    vals = [[col(col(i * j, 1, 92), 0, 91) for i in N] for j in N]
-  else:
-    vals = [[col(i + j, 0, 92) for i in N] for j in N]
-  H = ansi_boldify(N)
-  table = list(tabulate(vals, headers = H, showindex = H, tablefmt = "simple_grid"))
-  table[table.index('\n') + 4] = ansi_boldify(op)
-  print(''.join(table))
+    return f'\033[{code}m{what}\033[0m'
 
 # goedelize text
 
