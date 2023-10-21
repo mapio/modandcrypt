@@ -51,9 +51,6 @@ def invm(a, m):
   if gcd(a, m) != 1: return None
   return egcd(a, m)[1] % m
 
-def rsa(m, k):
-  return expm(m, k[0], k[1])  
-
 class Mod:
 
   class R:
@@ -86,6 +83,10 @@ class Mod:
       if not isinstance(other, Mod.R): return False
       if self.m != other.m: raise ValueError()
       return self.n == other.n
+    def __hash__(self):
+      return hash((self.n, self.m))
+    def rappresentante(self):
+      return self.n
     def potenze(self):
       res = []
       for i in range(1, self.m):
@@ -121,7 +122,7 @@ class Mod:
   def generatori(self):
     N = self.elementi_coprimi()
     vals = [r.potenze() for r in N]
-    t = φ(self.m)
+    t = φ(self.m) # this can take a while!
     H = [_sgr('**')] + _sgr(range(1, 1 + t))
     I = [_sgr(n) if len(v) != t else _sgr(_sgr(n), 96) for n, v in zip(N, vals)]
     _table(vals, H, I)
