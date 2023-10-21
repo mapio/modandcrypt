@@ -144,11 +144,31 @@ def _sgr(what, code = 1, target = None):
   else:
     return f'\033[{code}m{what}\033[0m'
 
+# criptoanalisi frequenziale
+
+def istogramma_lettere(text, num = 21):
+  cnt = Counter() 
+  cnt.update([t.upper() for t in text if t.isalpha()])
+  cnt = dict(sorted(cnt.most_common(num)))
+  plt.bar(list(cnt.keys()), list(cnt.values()))
+  plt.yticks([])
+
 # goedelize text
 
-def to_number(msg, length = 20):
-  b = (msg.encode('utf-8') + b' ' * length)[:length]
-  return int.from_bytes(b, 'big')
+def a_bytes(testo):
+  return list(testo.encode('utf-8'))
 
-def from_number(n, length = 20):
-  return int.to_bytes(n, length, 'big').decode('utf-8').strip()
+def a_numero(testo):
+  numero = 0
+  for b in a_bytes(testo): numero = numero * 256 + b
+  return numero
+
+def da_bytes(bs):
+  return bytes(bs).decode('utf-8')
+
+def da_numero(numero):
+  res = []
+  while numero > 0:
+    numero, b = numero // 256, numero % 256
+    res.append(b)
+  return bytes(reversed(res)).decode('utf-8')
