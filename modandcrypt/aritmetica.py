@@ -1,4 +1,4 @@
-from .primi import gcd, egcd, φ
+from .primi import MCD, MCDE, φ
 from .visualizza import tabella, sgr
 
 def expm(b, e, m):
@@ -10,8 +10,8 @@ def expm(b, e, m):
   return r
 
 def invm(a, m):
-  if gcd(a, m) != 1: return None
-  return egcd(a, m)[1] % m
+  if MCD(a, m) != 1: return None
+  return MCDE(a, m)[1] % m
 
 class Mod:
 
@@ -65,7 +65,7 @@ class Mod:
   def elementi(self):
     return [self[i] for i in range(self.m)]
   def elementi_coprimi(self):
-    return [self[i] for i in range(1, self.m) if gcd(i, self.m) == 1]
+    return [self[i] for i in range(1, self.m) if MCD(i, self.m) == 1]
   def somma(self):
     N = self.elementi()
     vals = [[sgr(i + j, 92, 0) for i in N] for j in N]

@@ -1,7 +1,7 @@
 from functools import reduce
 from operator import mul, add
 
-def egcd(a, b):
+def MCDE(a, b):
   s0, s1, t0, t1 = 1, 0, 0, 1
   while b != 0:
     q, a, b = a // b, b, a % b
@@ -9,8 +9,8 @@ def egcd(a, b):
     t0, t1 = t1, t0 - q * t1
   return a, s0, t0
 
-def gcd(a, b):
-  return egcd(a, b)[0]
+def MCD(a, b):
+  return MCDE(a, b)[0]
 
 def è_primo(n):
   if n < 2: return False
@@ -36,5 +36,5 @@ def moltiplica(lst):
   return reduce(mul, lst, 1)
 
 def φ(n):
-  return sum(1 for k in range(1, n + 1) if gcd(n, k) == 1)
+  return sum(1 for k in range(1, n + 1) if MCD(n, k) == 1)
   

@@ -7,6 +7,6 @@ def sgr(what, code = 1, target = None):
   else:
     return f'\033[{code}m{what}\033[0m'
 
-def tabella(vals, header, index):
+def tabella(vals, header = [], index = False):
   print(tabulate(vals, headers = header, showindex = index, tablefmt = 'simple_grid'))
  
