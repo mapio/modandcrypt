@@ -1,14 +1,19 @@
 from collections import Counter
 from unicodedata import normalize
 from string import ascii_uppercase 
+from urllib.request import urlopen
 
 import matplotlib.pyplot as plt
 
 SEMPLICI = ascii_uppercase + ' \n'
 NUM_SEMPLICI = len(SEMPLICI)
+SEMPLICI_VISUALIZZABILI = list(SEMPLICI[:-2]) + ['␢', '↩']
 
 POS2LETTERA = dict(zip(range(NUM_SEMPLICI), SEMPLICI))
 LETTERA2POS = dict(zip(SEMPLICI, range(NUM_SEMPLICI)))
+
+def a_visualizzazione(testo):
+  return ''.join(SEMPLICI_VISUALIZZABILI[LETTERA2POS[c]] for c in semplifica(testo))
 
 def semplifica(testo):
   return ''.join(c for c in normalize('NFD', testo).upper() if c in SEMPLICI)
@@ -41,5 +46,8 @@ def istogramma_lettere(testo, num = 21):
   cnt = Counter() 
   cnt.update(semplifica(testo))
   cnt = dict(sorted(cnt.most_common(num)))
-  plt.bar(list(SEMPLICI[:-2]) + ['␢', '↩'], [cnt[c] if c in cnt else 0 for c in SEMPLICI])
+  plt.bar(SEMPLICI_VISUALIZZABILI, [cnt[c] if c in cnt else 0 for c in SEMPLICI])
   plt.yticks([])
+
+def da_gutenberg(url):
+  with urlopen(url) as inf: return inf.read().decode('utf-8-sig')

@@ -17,14 +17,16 @@ def _ost(testo, chiave, passi):
   p_testo = a_posizioni(testo)
   chiave = semplifica(chiave)
   p_chiave = a_posizioni(chiave)
+  trasf = da_posizioni(orologio_somma(p_testo, p_chiave))
   tabella([
     cp(testo),
     islice(cycle(cp(chiave)), len(testo)),
-    cp(da_posizioni(orologio_somma(p_testo, p_chiave)))
+    cp(trasf)
   ], index = sgr(passi))
+  return trasf
 
 def cifra(chiaro, chiave):
-  _ost(chiaro, chiave, ['chiaro', 'chiave', 'cifrato'])
+  return _ost(chiaro, chiave, ['p', 'k', 'c'])
 
 def decifra(cifrato, chiave):
-  _ost(cifrato, inverti(chiave), ['cifrato', 'chiave', 'chiaro'])
+  return _ost(cifrato, inverti(chiave), ['c', 'k', 'p'])
