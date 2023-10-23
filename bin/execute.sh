@@ -1,3 +1,6 @@
 #!/bin/bash
 
-jupyter nbconvert Slides.ipynb --to notebook --execute --inplace
+for n in *.ipynb; do
+  echo "Processing ${n}..."
+  jupyter nbconvert $n --to notebook --execute --inplace
+done
