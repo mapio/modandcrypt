@@ -48,6 +48,8 @@ def istogramma_lettere(testo, num = 21):
   cnt = dict(sorted(cnt.most_common(num)))
   plt.bar(SEMPLICI_VISUALIZZABILI, [cnt[c] if c in cnt else 0 for c in SEMPLICI])
   plt.yticks([])
-
+  plt.show()
+  return cnt
+  
 def da_gutenberg(url):
   with urlopen(url) as inf: return inf.read().decode('utf-8-sig')
