@@ -42,10 +42,9 @@ def da_numero(numero):
     res.append(b)
   return bytes(reversed(res)).decode('utf-8')
 
-def istogramma_lettere(testo, num = 21):
+def istogramma_lettere(testo):
   cnt = Counter() 
   cnt.update(semplifica(testo))
-  cnt = dict(sorted(cnt.most_common(num)))
   plt.bar(SEMPLICI_VISUALIZZABILI, [cnt[c] if c in cnt else 0 for c in SEMPLICI])
   plt.yticks([])
   plt.show()
