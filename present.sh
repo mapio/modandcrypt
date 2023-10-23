@@ -10,6 +10,3 @@ while true; do
     --SlidesExporter.exclude_output_prompt=True \
     --TagRemovePreprocessor.remove_input_tags='{"hide"}'
 done
-
-# or beige, blood, league, moon, night, serif, simple, sky, solarized, white 
-
