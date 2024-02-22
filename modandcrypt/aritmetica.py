@@ -72,7 +72,7 @@ class Mod:
     H = sgr(N)
     tabella(vals, [sgr('+')] + H, H)
   def prodotto(self):
-    N = self.elementi()[1:]
+    N = self.elementi()
     vals = [[sgr(sgr(i * j, 92, 1), 91, 0) for i in N] for j in N]
     H = sgr(N)
     tabella(vals, [sgr('*')] + H, H)
